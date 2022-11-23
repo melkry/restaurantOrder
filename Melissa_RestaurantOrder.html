@@ -1,0 +1,273 @@
+<html>
+  <head>
+    <title>Mel's Bistro</title>
+    <style type="text/css">
+      body {
+        background-color: ButtonFace;
+      }
+
+      .DivTitle {
+        font-family: Verdana, Arial, Helvetica;
+        font-size: 14pt;
+        color: black;
+      }
+
+      .TxtBox {
+        font-family: Verdana, Arial, Helvetica;
+        font-size: 8pt;
+        color: black;
+        height: 19px;
+        background-color: white;
+        border: 1px solid #07a2fe;
+      }
+      .DivBox {
+        font-family: Verdana, Arial, Helvetica;
+        font-size: 10pt;
+        color: black;
+        width: 250px;
+        background-color: aliceblue;
+        border: 1px solid #07a2fe;
+      }
+      .DivOrderBox {
+        font-family: Verdana, Arial, Helvetica;
+        font-size: 10pt;
+        color: black;
+        width: 250px;
+        background-color: #f8cdfe;
+      }
+      .BtnButton {
+        font-family: Verdana, Arial, Helvetica;
+        font-size: 8pt;
+        color: black;
+        height: 24px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="DivTitle">Mel's Bistro</div>
+    <br />
+    <div>Please select one item from the Appetizer menu</div>
+    <div id="divAppMenu" class="DivBox"></div>
+    <div>Please enter your selection #:</div>
+    <input
+      type="text"
+      id="txtAppetizer"
+      class="TxtBox"
+      style="width: 20px"
+      value="1"
+    />
+    <br /><br />
+
+    <div>Please select one item from the Entree menu</div>
+    <div id="divEntMenu" class="DivBox"></div>
+    <div>Please enter your selection #:</div>
+    <input
+      type="text"
+      id="txtEntree"
+      class="TxtBox"
+      style="width: 20px"
+      value="1"
+    />
+    <br /><br />
+
+    <div>Please select one item from the Dessert menu</div>
+    <div id="divDesMenu" class="DivBox"></div>
+    <div>Please enter your selection #:</div>
+    <input
+      type="text"
+      id="txtDessert"
+      class="TxtBox"
+      style="width: 20px"
+      value="1"
+    />
+    <br /><br />
+
+    <div>Please select one item from the Beverage menu</div>
+    <div id="divBevMenu" class="DivBox"></div>
+    <div>Please enter your selection #:</div>
+    <input
+      type="text"
+      id="txtBeverage"
+      class="TxtBox"
+      style="width: 20px"
+      value="1"
+    />
+    <br /><br />
+    <input
+      type="button"
+      id="btnAdd"
+      class="BtnButton"
+      value="Complete Order"
+      onclick="completeOrder();"
+    />
+    <input
+      type="button"
+      id="btnClear"
+      class="BtnButton"
+      value="Clear Order"
+      onclick="clearOrder();"
+    />
+    <br /><br />
+    <div id="divOrder" class="DivOrderBox"></div>
+  </body>
+  <script>
+    // Create and populate eight arrays, two for each sub-menu
+
+    var appDescriptions = [
+      "No Selection",
+      "Deep Fried Calamari",
+      "Soup du Jour",
+      "Garden Salad",
+      "Garlic Bread",
+    ];
+    var appPrices = [0.0, 7.5, 4.99, 3.99, 4.5];
+
+    var entrDescriptions = [
+      "No Selection",
+      "Rib Steak",
+      "Fettuccini Alfredo",
+      "Pan-Fried Sole",
+      "Mediterranean Platter",
+      "Vegetarian Lasagna",
+    ];
+    var entrPrices = [0.0, 15.95, 11.25, 17.95, 13.5, 9.0];
+
+    var desDescriptions = [
+      "No Selection",
+      "Ice Cream Sundae",
+      "Cheesecake",
+      "Chocolate Truffle Cake",
+      "Raspberry Mousse",
+    ];
+    var desPrices = [0.0, 2.95, 5.0, 6.0, 4.5];
+
+    var bevDescriptions = [
+      "No Selection",
+      "Water",
+      "Juice",
+      "Pop",
+      "Milk",
+      "Coffee",
+      "Tea",
+    ];
+    var bevPrices = [0.0, 0.0, 2.0, 2.0, 2.0, 1.75, 1.75];
+
+    // Declare and initialize a variable to hold the total bill for all the food ordered by the diner
+    var totalBill = 0;
+
+    // Output descriptions and prices to according divs to display menu to customer
+    for (let i = 0; i < appDescriptions.length; i++) {
+      document.getElementById("divAppMenu").innerHTML +=
+        i +
+        1 +
+        ". " +
+        appDescriptions[i] +
+        " $" +
+        appPrices[i].toFixed(2) +
+        "<br>";
+    }
+
+    for (let i = 0; i < entrDescriptions.length; i++) {
+      document.getElementById("divEntMenu").innerHTML +=
+        i +
+        1 +
+        ". " +
+        entrDescriptions[i] +
+        " $" +
+        entrPrices[i].toFixed(2) +
+        "<br>";
+    }
+
+    for (let i = 0; i < desDescriptions.length; i++) {
+      document.getElementById("divDesMenu").innerHTML +=
+        i +
+        1 +
+        ". " +
+        desDescriptions[i] +
+        " $" +
+        desPrices[i].toFixed(2) +
+        "<br>";
+    }
+
+    for (let i = 0; i < bevDescriptions.length; i++) {
+      document.getElementById("divBevMenu").innerHTML +=
+        i +
+        1 +
+        ". " +
+        bevDescriptions[i] +
+        " $" +
+        bevPrices[i].toFixed(2) +
+        "<br>";
+    }
+
+    // completeOrder(); triggered when user clicks "Complete Order", displays a summary of the order along with the total price
+    function completeOrder() {
+      //get textbox values
+      var appSelection = parseInt(
+        document.getElementById("txtAppetizer").value
+      );
+      var entrSelection = parseInt(document.getElementById("txtEntree").value);
+      var desSelection = parseInt(document.getElementById("txtDessert").value);
+      var bevSelection = parseInt(document.getElementById("txtBeverage").value);
+
+      // create variable to append selection descriptions to
+      var order = [];
+
+      // for each menu, check if selection is valid and push to order array and total bill if it is (and if it's over 1)
+      if (appSelection > appDescriptions.length || appSelection < 1) {
+        alert(
+          "Invalid appetizer item number, please review the menu and try again."
+        );
+      } else if (appSelection > 1) {
+        order.push(appDescriptions[appSelection - 1]);
+        totalBill += appPrices[appSelection - 1];
+      }
+
+      if (entrSelection > entrDescriptions.length || entrSelection < 1) {
+        alert(
+          "Invalid entree item number, please review the menu and try again."
+        );
+      } else if (entrSelection > 1) {
+        order.push(entrDescriptions[entrSelection - 1]);
+        totalBill += entrPrices[entrSelection - 1];
+      }
+
+      if (desSelection > desDescriptions.length || desSelection < 1) {
+        alert(
+          "Invalid dessert item number, please review the menu and try again."
+        );
+      } else if (desSelection > 1) {
+        order.push(desDescriptions[desSelection - 1]);
+        totalBill += desPrices[desSelection - 1];
+      }
+
+      if (bevSelection > bevDescriptions.length || bevSelection < 1) {
+        alert(
+          "Invalid beverage item number, please review the menu and try again."
+        );
+      } else if (bevSelection > 1) {
+        order.push(bevDescriptions[bevSelection - 1]);
+        totalBill += bevPrices[bevSelection - 1];
+      }
+
+      // output final order to div
+      document.getElementById("divOrder").innerHTML =
+        "Thank you! Your order consists of:<br><br>";
+      for (let i = 0; i < order.length; i++) {
+        document.getElementById("divOrder").innerHTML += order[i] + "<br>";
+      }
+      document.getElementById("divOrder").innerHTML +=
+        "<br>Your total bill comes to: $" + totalBill.toFixed(2);
+    }
+
+    // clearOrder(); function, sets all the textboxes back to 1 (no selection)
+    function clearOrder() {
+      document.getElementById("txtAppetizer").value = "1";
+      document.getElementById("txtEntree").value = "1";
+      document.getElementById("txtDessert").value = "1";
+      document.getElementById("txtBeverage").value = "1";
+      document.getElementById("divOrder").innerHTML = "";
+    }
+  </script>
+</html>
